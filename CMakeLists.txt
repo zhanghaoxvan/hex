@@ -28,13 +28,15 @@ file(GLOB_RECURSE SRCS "src/*.cpp")
 include_directories(include)
 include_directories(${FTXUI_DIR}/include)
 
+add_subdirectory(${FTXUI_DIR})
+
 add_executable(hex ${SRCS})
 
 target_link_libraries(hex
     PRIVATE
-    ${FTXUI_DIR}/build/libftxui-component.a
-    ${FTXUI_DIR}/build/libftxui-dom.a
-    ${FTXUI_DIR}/build/libftxui-screen.a
+    ftxui::component
+    ftxui::dom
+    ftxui::screen
     pthread
 )
 
