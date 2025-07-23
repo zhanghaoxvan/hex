@@ -135,7 +135,7 @@ void DetermineExecutablePartitions(HexEditorState& state) {
     }
  }
 
-void LoadFile(HexEditorState& state, bool nerd) {
+void LoadFile(HexEditorState& state) {
     std::ifstream file(state.filename, std::ios::binary);
     if (!file) {
         state.status = "Failed(Opening " + state.filename +")";
@@ -152,26 +152,6 @@ void LoadFile(HexEditorState& state, bool nerd) {
 
     state.status = "Loaded: ";
 
-    Platform plat = CheckPlatforms(state);
-
-    if (nerd) {
-        switch (plat) {
-        case Windows:
-            state.status += "  ";
-            break;
-        case Linux:
-            state.status += "  ";
-            break;
-        case MacOS:
-            state.status += "  ";
-            break;
-        case Unknown:
-            state.status += "  ";
-            break;
-        default:
-            break;
-        }
-    }
     state.status += state.filename + " (" + std::to_string(size) + " bytes)";
 }
 
@@ -407,15 +387,7 @@ Element RenderHexEditor(HexEditorState& state) {
     // Status bar
     lines.push_back(
         hbox({
-            text(state.status) | flex,
-            text(" | "),
-            text("Enter: Edit"),
-            text(" | "),
-            text("Ctrl+Q: Quit"),
-            text(" | "),
-            text("Esc: Cancel"),
-            text(" | "),
-            text("Ctrl+F: Search"),
+            text(state.status) | flex
         }) | border
     );
 
@@ -442,14 +414,12 @@ Element RenderSearchWindow(HexEditorState& state) {
 }
 
 const char* options[] = {
-    "--light",
-    "--nerd"
+    "--light"
 };
-const int options_num = 2;
+const int options_num = 1;
 
 // Option Check
 bool is_light = false;
-bool is_nerd   = false;
 
 int file_index = 1;
 
@@ -458,7 +428,6 @@ int main(int argc, char* argv[]) {
         std::cout << "Usage: " << argv[0] << " [-OPTIONS] <filename>\n";
         std::cout << "-OPTIONS:" << std::endl;
         std::cout << "  --light: open highlight support" << std::endl;
-        std::cout << "  --nerd : open Need Fonts support" << std::endl;
         return 1;
     }
     HexEditorState state;
@@ -474,9 +443,6 @@ int main(int argc, char* argv[]) {
                     is_light = true;
                     break;
 
-                    // Nerd Font Support
-                case 1:
-                    is_nerd   = true;
                 default:
                     break;
                 }
@@ -501,11 +467,7 @@ int main(int argc, char* argv[]) {
 
     state.filename = argv[file_index];
     
-    if (is_nerd) {
-        LoadFile(state, true);
-    } else {
-        LoadFile(state, false);
-    }
+    LoadFile(state);
 
     if (is_light) {
         DetermineExecutablePartitions(state);
