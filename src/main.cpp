@@ -414,12 +414,12 @@ Element RenderSearchWindow(HexEditorState& state) {
 }
 
 const char* options[] = {
-    "--light"
+    "--no-light"
 };
 const int options_num = 1;
 
 // Option Check
-bool is_light = false;
+bool is_light = true;
 
 int file_index = 1;
 
@@ -427,7 +427,7 @@ int main(int argc, char* argv[]) {
     if (argc < 2 || (argc == 2 && std::string(argv[1]) == std::string("--help"))) {
         std::cout << "Usage: " << argv[0] << " [-OPTIONS] <filename>\n";
         std::cout << "-OPTIONS:" << std::endl;
-        std::cout << "  --light: open highlight support" << std::endl;
+        std::cout << "  --no-light: Disable highlight support" << std::endl;
         return 1;
     }
     HexEditorState state;
@@ -438,9 +438,9 @@ int main(int argc, char* argv[]) {
                 is_option = true;
                 switch (i) {
 
-                    // Highlight Support
+                    // Disable Highlight Support
                 case 0:
-                    is_light = true;
+                    is_light = false;
                     break;
 
                 default:
@@ -460,8 +460,7 @@ int main(int argc, char* argv[]) {
     if (file_index >= argc) {
         std::cout << "Usage: " << argv[0] << "[-OPTIONS] <filename>\n";
         std::cout << "-OPTIONS:" << std::endl;
-        std::cout << "  --modern: open highlight support" << std::endl;
-        std::cout << "  --nerd  : open Need Fonts support" << std::endl;
+        std::cout << "  --no-light: Disable highlight support" << std::endl;
         return 1;
     }
 
