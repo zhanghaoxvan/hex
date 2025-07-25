@@ -416,9 +416,9 @@ Element RenderSearchWindow(HexEditorState& state) {
 const char* options[] = {
     "--no-light"
 };
+
 const int options_num = 1;
 
-// Option Check
 bool is_light = true;
 
 int file_index = 1;
